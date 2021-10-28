@@ -1,30 +1,33 @@
-const core = require('@actions/core')
-const github = require('@actions/github')
+const core = require("@actions/core");
+const github = require("@actions/github");
 
-const validEvent = ['pull_request', 'pull_request_target']
+const validEvent = ["pull_request", "pull_request_target"];
 
 async function main() {
   try {
-    const { eventName, payload: {repository: repo, pull_request: pr} } = github.context
+    const {
+      eventName,
+      payload: { repository: repo, pull_request: pr },
+    } = github.context;
 
     if (validEvent.indexOf(eventName) < 0) {
-      core.error(`Invalid event: ${eventName}`)
-      return
+      core.error(`Invalid event: ${eventName}`);
+      return;
     }
 
-    const token = core.getInput('token')
-    const octokit = new github.GitHub(token)
+    const token = core.getInput("token");
+    const octokit = new github.GitHub(token);
 
     const commits = await octokit.pulls.listCommits({
       owner: repo.owner.login,
       repo: repo.name,
       pull_number: pr.number,
-    })
+    });
 
-    core.setOutput('commits', JSON.stringify(commits.data))
+    core.setOutput("commits", JSON.stringify(commits.data));
   } catch (error) {
-    core.setFailed(error.message)
+    core.setFailed(error.message);
   }
 }
 
-main()
+main();
