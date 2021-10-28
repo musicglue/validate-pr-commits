@@ -4,12 +4,7 @@ A GitHub Action that get commits in current pull-request
 
 ## Usage
 
-Add .github/workflows/sanity-check.yml with the following:
-
 ```yaml
-name: Sanity check
-on: [pull_request]
-
 jobs:
   commits_check_job:
     runs-on: ubuntu-latest
