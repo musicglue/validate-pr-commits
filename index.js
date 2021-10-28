@@ -68,11 +68,11 @@ async function main() {
     const keep_keypaths = core.getInput("keep_keypaths");
     const octokit = new github.GitHub(token);
 
-    const commits = await octokit.pulls.listCommits({
+    const { data: commits } = await octokit.pulls.listCommits({
       owner: repo.owner.login,
       repo: repo.name,
       pull_number: pr.number,
-    }).data;
+    });
 
     if (keep_keypaths) {
       commits = commits.map(onlyKeepKeypaths(keep_keypaths));
