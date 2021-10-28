@@ -21,4 +21,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get abbreviated PR Commits
+        id: "get-pr-commits"
+        uses: tim-actions/get-pr-commits@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # This only keeps the following structure for each commit:
+          # { "sha": "<sha>", "commit": {"message": "<commit message>" } }
+          # All other information is discarded.
+          keep_keypaths: '[["sha"], ["commit", "message"]]'
 ```

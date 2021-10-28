@@ -4,6 +4,9 @@ inputs:
   token:
     description: "A token with access to your repository scoped in as a secret"
     required: true
+  keep_keypaths:
+    description: "A list of keypaths to keep in the results"
+    required: false
 outputs:
   commits:
     description: "commits in pr"
