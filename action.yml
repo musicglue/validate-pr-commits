@@ -4,12 +4,9 @@ inputs:
   token:
     description: "A token with access to your repository scoped in as a secret"
     required: true
-  keep_keypaths:
-    description: "A list of keypaths to keep in the results"
-    required: false
 outputs:
   commits:
-    description: "commits in pr"
+    description: "JSON stringified [{ commit { message }, sha }]"
 runs:
-  using: "node12"
+  using: "node16"
   main: "index.js"

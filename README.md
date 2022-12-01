@@ -21,8 +21,4 @@ jobs:
         uses: thislooksfun/get-pr-commits@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # This only keeps the following structure for each commit:
-          # { "sha": "<sha>", "commit": {"message": "<commit message>" } }
-          # All other information is discarded.
-          keep_keypaths: "[[""sha""], [""commit"", ""message""]]"
 ```
