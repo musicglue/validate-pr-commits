@@ -1,0 +1,5 @@
+{
+  "extends": "@tsconfig/node16-strictest/tsconfig.json",
+  "compilerOptions": { "target": "ES2015", "moduleResolution": "node" },
+  "files": ["index.ts"]
+}
