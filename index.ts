@@ -19,9 +19,9 @@ const validEvent = new Set(["pull_request", "pull_request_target"]);
     }
 
     const token = core.getInput("token");
-    const octokit = new github.GitHub(token);
+    const octokit = github.getOctokit(token);
 
-    const { data: commits } = await octokit.pulls.listCommits({
+    const { data: commits } = await octokit.rest.pulls.listCommits({
       owner: repo.owner.login,
       repo: repo.name,
       pull_number: pr.number,
