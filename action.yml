@@ -9,4 +9,4 @@ outputs:
     description: "JSON stringified [{ commit { message }, sha }]"
 runs:
   using: "node16"
-  main: "index.js"
+  main: "dist/index.js"
