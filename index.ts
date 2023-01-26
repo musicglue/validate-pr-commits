@@ -47,13 +47,8 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
     // Using .forEach instead of .some/.all so that all commits are validated in one go, instead of
     // making it a game of whack-a-mole
     commits.forEach(({ commit: { message }, sha }) => {
-      const subjectLine = message.split("\n").shift();
-
-      if (subjectLine == null) {
-        pass = false;
-        core.error(`empty subject line for "${sha}"`);
-        return;
-      }
+      // discard the extended message, we only care about the subject line
+      const subjectLine = message.split("\n\n").shift()!.replace(/\n/g, "");
 
       core.debug(`checking: "${subjectLine}"`);
 
