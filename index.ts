@@ -25,6 +25,10 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
     const warnOnly = core.getInput("warnOnly") == "true";
     const octokit = github.getOctokit(token);
 
+    if (Number.isNaN(maxSubjectLen)) {
+      throw new Error(`Invalid maxSubjectLen: "${maxSubjectLen}"`);
+    }
+
     const { data: commits } = await octokit.rest.pulls.listCommits({
       owner: repo.owner.login,
       repo: repo.name,
