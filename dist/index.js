@@ -9554,6 +9554,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
         try {
             const { eventName, payload: { repository: repo, pull_request: pr }, } = github.context;
             if (repo == null || pr == null) {
+                core.debug(`repo is null=${repo == null}, pr is null==${pr == null}`);
                 throw new Error("Repo or PR is undefined");
             }
             if (validEvent.has(eventName)) {
