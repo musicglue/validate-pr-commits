@@ -16,7 +16,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
       throw new Error("Repo or PR is undefined");
     }
 
-    if (validEvent.has(eventName)) {
+    if (!validEvent.has(eventName)) {
       throw new Error(`Unsupported event: "${eventName}"`);
     }
 
