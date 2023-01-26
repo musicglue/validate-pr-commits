@@ -59,6 +59,9 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
 
       if (subjectLine.length > maxSubjectLen) {
         pass = false;
+        core.debug(
+          `length fail: ${subjectLine.length} (limit: ${maxSubjectLen})`
+        );
         validationErr(
           `subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`
         );
@@ -66,6 +69,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
 
       if (!ccFormat.test(subjectLine)) {
         pass = false;
+        core.debug(`format fail: ${subjectLine}`);
         validationErr(
           `subject line doesn't follow commit conventions for commit "${sha}"`
         );
