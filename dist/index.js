@@ -9561,13 +9561,13 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
                 throw new Error(`Unsupported event: "${eventName}"`);
             }
             const token = core.getInput("token");
-            const maxSubjectLen = parseFloat(core.getInput("maxSubjectLen"));
+            const maxSubjectLen = parseFloat(core.getInput("maxSubjectLine"));
             const warnOnly = core.getInput("warnOnly") == "true";
             const octokit = github.getOctokit(token);
             if (Number.isNaN(maxSubjectLen)) {
-                throw new Error(`Invalid maxSubjectLen: "${maxSubjectLen}"`);
+                throw new Error(`Invalid maxSubjectLine: "${maxSubjectLen}"`);
             }
-            core.debug(`maxSubjectLen=${maxSubjectLen}`);
+            core.debug(`maxSubjectLine=${maxSubjectLen}`);
             core.debug(`warnOnly=${warnOnly}`);
             const { data: commits } = yield octokit.rest.pulls.listCommits({
                 owner: repo.owner.login,
