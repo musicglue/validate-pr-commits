@@ -12,6 +12,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
     } = github.context;
 
     if (repo == null || pr == null) {
+      core.debug(`repo is null=${repo == null}, pr is null==${pr == null}`);
       throw new Error("Repo or PR is undefined");
     }
 
