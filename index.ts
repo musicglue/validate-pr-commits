@@ -3,7 +3,6 @@ import * as github from "@actions/github";
 
 const validEvent = new Set(["pull_request", "pull_request_target"]);
 const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
-const maxSubjectLen = 75;
 
 !(async function main() {
   try {
@@ -21,6 +20,8 @@ const maxSubjectLen = 75;
     }
 
     const token = core.getInput("token");
+    const maxSubjectLen = parseFloat(core.getInput("maxSubjectLen"));
+    const warnOnly = core.getInput("warnOnly") == "true";
     const octokit = github.getOctokit(token);
 
     const { data: commits } = await octokit.rest.pulls.listCommits({
@@ -30,6 +31,10 @@ const maxSubjectLen = 75;
     });
 
     let pass = true;
+
+    const validationErr = warnOnly
+      ? core.warning.bind(core)
+      : core.error.bind(core);
 
     // Using .forEach instead of .some/.all so that all commits are validated in one go, instead of
     // making it a game of whack-a-mole
@@ -44,20 +49,20 @@ const maxSubjectLen = 75;
 
       if (subjectLine.length > maxSubjectLen) {
         pass = false;
-        core.error(
+        validationErr(
           `subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`
         );
       }
 
       if (!ccFormat.test(subjectLine)) {
         pass = false;
-        core.error(
+        validationErr(
           `subject line doesn't follow commit conventions for commit "${sha}"`
         );
       }
     });
 
-    if (!pass) {
+    if (!pass && !warnOnly) {
       core.setFailed(
         `one or more commits are in conflict with commit conventions`
       );
