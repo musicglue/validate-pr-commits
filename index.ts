@@ -69,7 +69,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
 
       if (!ccFormat.test(subjectLine)) {
         pass = false;
-        core.debug(`format fail: ${subjectLine}`);
+        core.debug(`format fail: "${subjectLine}"`);
         validationErr(
           `subject line doesn't follow commit conventions for commit "${sha}"`
         );
