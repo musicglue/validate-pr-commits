@@ -47,7 +47,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
     // Using .forEach instead of .some/.all so that all commits are validated in one go, instead of
     // making it a game of whack-a-mole
     commits.forEach(({ commit: { message }, sha }) => {
-      const subjectLine = message.split("\n").pop();
+      const subjectLine = message.split("\n").shift();
 
       if (subjectLine == null) {
         pass = false;
