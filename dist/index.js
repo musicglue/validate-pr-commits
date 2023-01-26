@@ -9564,6 +9564,11 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
             const maxSubjectLen = parseFloat(core.getInput("maxSubjectLen"));
             const warnOnly = core.getInput("warnOnly") == "true";
             const octokit = github.getOctokit(token);
+            if (Number.isNaN(maxSubjectLen)) {
+                throw new Error(`Invalid maxSubjectLen: "${maxSubjectLen}"`);
+            }
+            core.debug(`maxSubjectLen=${maxSubjectLen}`);
+            core.debug(`warnOnly=${warnOnly}`);
             const { data: commits } = yield octokit.rest.pulls.listCommits({
                 owner: repo.owner.login,
                 repo: repo.name,
@@ -9582,6 +9587,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
                     core.error(`empty subject line for "${sha}"`);
                     return;
                 }
+                core.debug(`checking: "${subjectLine}"`);
                 if (subjectLine.length > maxSubjectLen) {
                     pass = false;
                     validationErr(`subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`);
