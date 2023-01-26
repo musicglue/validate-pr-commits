@@ -4,6 +4,14 @@ inputs:
   token:
     description: "A token with access to your repository scoped in as a secret"
     required: true
+  maxSubjectLine:
+    description: "Maximum subject line length"
+    default: 75
+    required: false
+  warnOnly:
+    description: "Warn on validation failure, but don't fail the build"
+    default: false
+    required: false
 runs:
   using: "node16"
   main: "dist/index.js"
