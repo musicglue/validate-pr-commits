@@ -6,7 +6,7 @@ inputs:
     required: true
   maxSubjectLine:
     description: "Maximum subject line length"
-    default: 75
+    default: 72
     required: false
   warnOnly:
     description: "Warn on validation failure, but don't fail the build"
