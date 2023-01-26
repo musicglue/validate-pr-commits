@@ -1,12 +1,9 @@
-name: "get-pr-commits"
-description: "A GitHub Action that get commits in current pull-request"
+name: "validate-pr-commits"
+description: "A GitHub Action that validates commit messages in the current pull-request"
 inputs:
   token:
     description: "A token with access to your repository scoped in as a secret"
     required: true
-outputs:
-  commits:
-    description: "JSON stringified [{ commit { message }, sha }]"
 runs:
   using: "node16"
   main: "dist/index.js"
