@@ -9562,22 +9562,17 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
             }
             const token = core.getInput("token");
             const maxSubjectLen = parseFloat(core.getInput("maxSubjectLine"));
-            const warnOnly = core.getInput("warnOnly") == "true";
             const octokit = github.getOctokit(token);
             if (Number.isNaN(maxSubjectLen)) {
                 throw new Error(`Invalid maxSubjectLine: "${maxSubjectLen}"`);
             }
             core.debug(`maxSubjectLine=${maxSubjectLen}`);
-            core.debug(`warnOnly=${warnOnly}`);
             const { data: commits } = yield octokit.rest.pulls.listCommits({
                 owner: repo.owner.login,
                 repo: repo.name,
                 pull_number: pr.number,
             });
             let pass = true;
-            const validationErr = warnOnly
-                ? core.warning.bind(core)
-                : core.error.bind(core);
             // Using .forEach instead of .some/.all so that all commits are validated in one go, instead of
             // making it a game of whack-a-mole
             commits.forEach(({ commit: { message }, sha }) => {
@@ -9587,15 +9582,15 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
                 if (subjectLine.length > maxSubjectLen) {
                     pass = false;
                     core.debug(`length fail: ${subjectLine.length} (limit: ${maxSubjectLen})`);
-                    validationErr(`subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`);
+                    core.error(`subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`);
                 }
                 if (!ccFormat.test(subjectLine)) {
                     pass = false;
                     core.debug(`format fail: "${subjectLine}"`);
-                    validationErr(`subject line doesn't follow commit conventions for commit "${sha}"`);
+                    core.error(`subject line doesn't follow commit conventions for commit "${sha}"`);
                 }
             });
-            if (!pass && !warnOnly) {
+            if (!pass) {
                 core.setFailed(`one or more commits are in conflict with commit conventions`);
             }
         }
