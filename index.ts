@@ -48,27 +48,21 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
 
       if (subjectLine.length > maxSubjectLen) {
         pass = false;
-        core.debug(
-          `length fail: ${subjectLine.length} (limit: ${maxSubjectLen})`
-        );
+        core.debug(`length fail: ${subjectLine.length} (limit: ${maxSubjectLen})`);
         core.error(
-          `subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`
+          `subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`,
         );
       }
 
       if (!ccFormat.test(subjectLine)) {
         pass = false;
         core.debug(`format fail: "${subjectLine}"`);
-        core.error(
-          `subject line doesn't follow commit conventions for commit "${sha}"`
-        );
+        core.error(`subject line doesn't follow commit conventions for commit "${sha}"`);
       }
     });
 
     if (!pass) {
-      core.setFailed(
-        `one or more commits are in conflict with commit conventions`
-      );
+      core.setFailed(`one or more commits are in conflict with commit conventions`);
     }
   } catch (error) {
     core.setFailed((error as Error).message);
