@@ -9572,7 +9572,6 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
                 repo: repo.name,
                 pull_number: pr.number,
             });
-            let pass = true;
             // Using .forEach instead of .some/.all so that all commits are validated in one go, instead of
             // making it a game of whack-a-mole
             commits.forEach(({ commit: { message }, sha }) => {
@@ -9580,19 +9579,12 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
                 const subjectLine = message.split("\n\n").shift().replace(/\n/g, "");
                 core.debug(`checking: "${subjectLine}"`);
                 if (subjectLine.length > maxSubjectLen) {
-                    pass = false;
-                    core.debug(`length fail: ${subjectLine.length} (limit: ${maxSubjectLen})`);
-                    core.error(`subject line too long (${subjectLine.length}>${maxSubjectLen}) for commit "${sha}"`);
+                    core.error(`error: length sha=${sha} subject="${subjectLine}"`);
                 }
                 if (!ccFormat.test(subjectLine)) {
-                    pass = false;
-                    core.debug(`format fail: "${subjectLine}"`);
-                    core.error(`subject line doesn't follow commit conventions for commit "${sha}"`);
+                    core.error(`error: format sha=${sha} subject="${subjectLine}"`);
                 }
             });
-            if (!pass) {
-                core.setFailed(`one or more commits are in conflict with commit conventions`);
-            }
         }
         catch (error) {
             core.setFailed(error.message);
