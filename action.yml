@@ -8,10 +8,6 @@ inputs:
     description: "Maximum subject line length"
     default: 72
     required: false
-  warnOnly:
-    description: "Warn on validation failure, but don't fail the build"
-    default: false
-    required: false
 runs:
   using: "node16"
   main: "dist/index.js"
