@@ -36,6 +36,8 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
       pull_number: pr.number,
     });
 
+    let hasErrors = false;
+
     // Using .forEach instead of .some/.all so that all commits are validated in one go, instead of
     // making it a game of whack-a-mole
     commits.forEach(({ commit: { message }, sha }) => {
@@ -45,13 +47,21 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
       core.debug(`checking: "${subjectLine}"`);
 
       if (subjectLine.length > maxSubjectLen) {
+        hasErrors = true;
         core.error(`error: length sha=${sha} subject="${subjectLine}"`);
       }
 
       if (!ccFormat.test(subjectLine)) {
+        hasErrors = true;
         core.error(`error: format sha=${sha} subject="${subjectLine}"`);
       }
     });
+
+    if (hasErrors) {
+      core.setFailed(
+        `one or more commit messages violates commit conventions. see the linter job output for more details.`,
+      );
+    }
   } catch (error) {
     core.setFailed((error as Error).message);
   }
