@@ -48,12 +48,12 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
 
       if (subjectLine.length > maxSubjectLen) {
         hasErrors = true;
-        core.error(`error: length sha=${sha} subject="${subjectLine}"`);
+        core.error(`violation=length sha=${sha} subject="${subjectLine}"`);
       }
 
       if (!ccFormat.test(subjectLine)) {
         hasErrors = true;
-        core.error(`error: format sha=${sha} subject="${subjectLine}"`);
+        core.error(`violation=format sha=${sha} subject="${subjectLine}"`);
       }
     });
 
