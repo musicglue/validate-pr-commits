@@ -9548,7 +9548,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const validEvent = new Set(["pull_request", "pull_request_target"]);
-const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?: .+$/;
+const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?!?: .+$/;
 !(function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
