@@ -9571,6 +9571,7 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?!?: .+$/
                 owner: repo.owner.login,
                 repo: repo.name,
                 pull_number: pr.number,
+                per_page: 100,
             });
             let hasErrors = false;
             // Using .forEach instead of .some/.all so that all commits are validated in one go, instead of
