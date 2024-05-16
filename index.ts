@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 
 const validEvent = new Set(["pull_request", "pull_request_target"]);
-const ccFormat = /^(chore|docs|feat|fix|refactor|style|test)(\([^)]+\))?!?: .+$/;
+const ccFormat = /^(chore|docs|feat|fix|refactor|revert|style|test)(\([^)]+\))?!?: .+$/;
 
 !(async function main() {
   try {
