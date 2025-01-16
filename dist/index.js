@@ -29219,6 +29219,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
+const disallowedTags = /\[RC|skip tests\]/i;
 const validEvent = new Set(["pull_request", "pull_request_target"]);
 const ccFormat = /^(chore|docs|feat|fix|refactor|revert|style|test)(\([^)]+\))?!?: .+$/;
 !(async function main() {
@@ -29258,6 +29259,10 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|revert|style|test)(\([^)]+\))?!
             if (!ccFormat.test(subjectLine)) {
                 hasErrors = true;
                 core.error(`violation=format sha=${sha} subject="${subjectLine}"`);
+            }
+            if (disallowedTags.test(subjectLine)) {
+                hasErrors = true;
+                core.error(`disallowed tags found sha=${sha} subject="${subjectLine}`);
             }
         });
         if (hasErrors) {
