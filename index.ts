@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 
+const disallowedTags = /\[RC|skip tests\]/i;
 const validEvent = new Set(["pull_request", "pull_request_target"]);
 const ccFormat = /^(chore|docs|feat|fix|refactor|revert|style|test)(\([^)]+\))?!?: .+$/;
 
@@ -55,6 +56,11 @@ const ccFormat = /^(chore|docs|feat|fix|refactor|revert|style|test)(\([^)]+\))?!
       if (!ccFormat.test(subjectLine)) {
         hasErrors = true;
         core.error(`violation=format sha=${sha} subject="${subjectLine}"`);
+      }
+
+      if (disallowedTags.test(subjectLine)) {
+        hasErrors = true;
+        core.error(`disallowed tags found sha=${sha} subject="${subjectLine}`);
       }
     });
 
